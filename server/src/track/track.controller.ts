@@ -2,18 +2,34 @@ import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
-import { Track } from './schemas/track.schema';
 import { TrackService } from './track.service';
+import { UseInterceptors } from '@nestjs/common/decorators';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UploadedFiles } from '@nestjs/common/decorators';
+import { Express } from 'express';
 
 @Controller('/tracks')
 export class TrackController {
   constructor(private trackService: TrackService) {}
   @Post()
-  create(@Body() dto: CreateTrackDto) {
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'audio', maxCount: 1 },
+      { name: 'picture', maxCount: 1 },
+    ]),
+  )
+  create(
+    @Body() dto: CreateTrackDto,
+    @UploadedFiles()
+    files: {
+      audio?: Express.Multer.File[];
+      picture?: Express.Multer.File[];
+    },
+  ) {
     return this.trackService.create(dto);
   }
   @Get(':id')
-  getOne(@Param('id') id:ObjectId) {
+  getOne(@Param('id') id: ObjectId) {
     return this.trackService.getOne(id);
   }
   @Get()
@@ -26,7 +42,7 @@ export class TrackController {
   }
 
   @Post('/comment')
-  createComment(@Body() dto: CreateCommentDto){
-    return this.trackService.createComment(dto)
+  createComment(@Body() dto: CreateCommentDto) {
+    return this.trackService.createComment(dto);
   }
 }
