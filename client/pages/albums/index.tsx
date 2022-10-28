@@ -1,15 +1,10 @@
-import * as React from "react";
-
-import MainLayout from "../layouts/MainLayout";
+import MainLayout from "../../layouts/MainLayout";
 
 function Index() {
   return (
     <>
       <MainLayout>
-        <div className="container">
-          <h1>Добро пожаловать</h1>
-          <h3>Здесь собраны лучшие треки</h3>
-        </div>
+        <div className="container">Список альбомов</div>
       </MainLayout>
       <style jsx>
         {`
