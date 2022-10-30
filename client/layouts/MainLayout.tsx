@@ -1,15 +1,14 @@
 import * as React from "react";
 import Navbar from "../components/Navbar";
 import { Container } from "@mui/material";
-interface Props {
-  children: React.ReactElement;
-}
+import Player from "../components/Player";
 
-function MainLayout({ children }: Props) {
+function MainLayout({ children }) {
   return (
     <>
       <Navbar />
       <Container style={{ margin: "90px 0" }}>{children}</Container>
+      <Player />
     </>
   );
 }
