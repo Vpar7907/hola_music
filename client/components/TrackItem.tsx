@@ -1,8 +1,11 @@
 import { ITrack } from "../types/track";
-import { Box, Button, Card, Grid, IconButton } from "@mui/material";
+import { Card, Grid, IconButton } from "@mui/material";
 import styles from "../styles/TrackItem.module.scss";
 import { Pause, PlayArrow, Delete } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { useActions } from "../hooks/useAction";
+import React from "react";
+import { SERVER_URL } from "../Constants";
 
 interface Props {
   track: ITrack;
@@ -11,6 +14,13 @@ interface Props {
 
 function TrackItem({ track, active = false }: Props): JSX.Element {
   const router = useRouter();
+  const { playTrack, pauseTrack, setActiveTrack } = useActions();
+
+  const play = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveTrack(track);
+    playTrack();
+  };
 
   return (
     <Card
@@ -19,15 +29,15 @@ function TrackItem({ track, active = false }: Props): JSX.Element {
         router.push("/tracks/" + track._id);
       }}
     >
-      <IconButton
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-        style={{ margin: "15px" }}
-      >
+      <IconButton onClick={play} style={{ margin: "15px" }}>
         {active ? <Pause /> : <PlayArrow />}
       </IconButton>
-      <img width={70} height={70} src={track.picture} alt={track.name} />
+      <img
+        width={70}
+        height={70}
+        src={SERVER_URL.concat(track.picture)}
+        alt={track.name}
+      />
       <Grid
         container
         direction="column"
