@@ -22,7 +22,7 @@ function Index(): JSX.Element {
   }
 
   return (
-    <MainLayout>
+    <MainLayout title="inMusic | Список треков">
       <Grid container>
         <Card style={{ width: 900 }}>
           <Box p={3}>
